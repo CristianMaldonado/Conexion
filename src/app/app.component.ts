@@ -1,20 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/Http';
+import { Component } from '@angular/core';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+import { BackendService } from './backend-service/backend.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [ BackendService ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
+  public posts;
 
-  lista = [{name: "pepe", age: "12"}, {name: "lucas", age: "23"}];
-  constructor(private http: Http){  }
+  constructor(private backend: BackendService) { 
 
-  ngOnInit(): void {
-    this.http.get("http://localhost:8080/project/flow.flowc?flowActionName=salida").
-    toPromise().then(r => r.json()).then(r => this.lista = r);
-  }
+    this.backend.getResponse().subscribe(
+            result => {
+              this.posts = result;
+              console.log(this.posts);
+            }
+            )
+   }
+  
+
 }
