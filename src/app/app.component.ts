@@ -10,15 +10,15 @@ import { BackendService } from './backend-service/backend.service';
 })
 export class AppComponent {
 
-  public posts;
-  public req;
-  public algo;
+  public logIn;
+  public add;
+  public out;
 
   constructor(private backend: BackendService) {
 
    }
 
-   obtenerRespuesta(){
+   /*obtenerRespuesta(){
     this.backend.getResponse().subscribe(
       result => {
         this.posts = result;
@@ -36,15 +36,32 @@ export class AppComponent {
         console.log(this.req.mensaje);
       }
     );
-   }
+   }*/
 
+   executeLogIn(){
+    this.backend.sessionInit().subscribe(
+      res => {
+        this.logIn = res;
+        console.log(this.logIn);
+      }
+    );
+  } 
    executeAddObject(){
      this.backend.sendObject().subscribe(
       res => {
-        this.algo = res;
-        console.log(this.algo);
+        this.add = res;
+        console.log(this.add);
       }
      );
    }
+   
+   executeLogOut(){
+    this.backend.sessionClose().subscribe(
+     res => {
+       this.out = res;
+       console.log(this.out);
+     }
+    );
+  }
 
 }
